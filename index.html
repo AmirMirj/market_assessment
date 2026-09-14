@@ -7,22 +7,22 @@
       name="description"
       content="An executive market-assessment demo for industrial automation leaders."
     />
-    <meta property="og:title" content="Northstar — Executive Market Scan" />
+    <meta property="og:title" content="Market Assessment 0.0" />
     <meta property="og:description" content="Decision-ready competitive intelligence, revealed in one keystroke." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#102d2b" />
-    <title>Northstar — Executive Market Scan</title>
+    <title>Market Assessment 0.0</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%23102d2b%22/><path d=%22M14 42h8V28h-8zm14 0h8V18h-8zm14 0h8V10h-8z%22 fill=%22%23ddff63%22/></svg>" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="shell">
       <header class="topbar">
-        <a class="brand" href="#" aria-label="Northstar home">
+        <a class="brand" href="#" aria-label="Market Assessment 0.0 home">
           <span class="brand-mark" aria-hidden="true">
             <span></span><span></span><span></span>
           </span>
-          <span>northstar</span>
+          <span>Market Assessment <sup>0.0</sup></span>
         </a>
         <div class="topbar-meta">
           <span class="status-dot"></span>
@@ -55,14 +55,12 @@
                   value="Pemamek"
                   autocomplete="off"
                   spellcheck="false"
-                  aria-describedby="input-help"
                 />
                 <button type="submit" aria-label="Run company scan">
                   <span>Run scan</span>
                   <kbd>↵</kbd>
                 </button>
               </div>
-              <p id="input-help">Pre-analyzed company profiles appear instantly. Try “Pemamek”.</p>
             </form>
           </div>
         </section>
@@ -165,6 +163,71 @@
             </div>
           </section>
 
+          <section class="opportunity-section" aria-labelledby="opportunity-title">
+            <div class="opportunity-header">
+              <div>
+                <span class="section-label">Greenfield opportunities</span>
+                <h3 id="opportunity-title">Where Pemamek can create the next market</h3>
+              </div>
+              <p>Three evidence-led growth hypotheses shaped by the competitive position and direction of travel.</p>
+            </div>
+
+            <div class="opportunity-grid">
+              <article class="opportunity-card featured">
+                <div class="opportunity-topline">
+                  <span class="opportunity-index">01</span>
+                  <span class="horizon">Now–3 years</span>
+                </div>
+                <div class="opportunity-icon" aria-hidden="true">✦</div>
+                <h4>Autonomous naval module lines</h4>
+                <p class="opportunity-thesis">Package fabrication cells, adaptive welding, and digital production control into a phased modernization path for capacity-constrained yards.</p>
+                <dl>
+                  <div><dt>Segment</dt><dd>Naval &amp; icebreaker yards</dd></div>
+                  <div><dt>Geography</dt><dd>Nordics · North America</dd></div>
+                  <div><dt>Feature</dt><dd>Low-operator autonomous line</dd></div>
+                  <div><dt>Pricing</dt><dd>Phased capex + lifecycle software</dd></div>
+                </dl>
+                <div class="why-now"><span>Why now</span> Defense capacity, labor scarcity, and delivery pressure are converging.</div>
+              </article>
+
+              <article class="opportunity-card">
+                <div class="opportunity-topline">
+                  <span class="opportunity-index">02</span>
+                  <span class="horizon">2–5 years</span>
+                </div>
+                <div class="opportunity-icon" aria-hidden="true">↗</div>
+                <h4>Floating-wind factory blueprint</h4>
+                <p class="opportunity-thesis">Productize a modular production system for serial fabrication of next-generation floating foundations and heavy nodes.</p>
+                <dl>
+                  <div><dt>Segment</dt><dd>Floating wind fabricators</dd></div>
+                  <div><dt>Geography</dt><dd>North Sea · East Asia</dd></div>
+                  <div><dt>Feature</dt><dd>Adaptive multipass + material flow</dd></div>
+                  <div><dt>Pricing</dt><dd>Capacity-tiered line packages</dd></div>
+                </dl>
+                <div class="why-now"><span>Why now</span> XL structures are moving from prototypes toward repeatable production.</div>
+              </article>
+
+              <article class="opportunity-card">
+                <div class="opportunity-topline">
+                  <span class="opportunity-index">03</span>
+                  <span class="horizon">1–4 years</span>
+                </div>
+                <div class="opportunity-icon" aria-hidden="true">◎</div>
+                <h4>Automation-as-a-service</h4>
+                <p class="opportunity-thesis">Open the mid-market with rapidly deployed smart welding cells, remote optimization, and a lower-risk commercial model.</p>
+                <dl>
+                  <div><dt>Segment</dt><dd>Mid-size yards &amp; fabricators</dd></div>
+                  <div><dt>Geography</dt><dd>Baltics · Iberia · Southeast Asia</dd></div>
+                  <div><dt>Feature</dt><dd>No-code cells + remote intelligence</dd></div>
+                  <div><dt>Pricing</dt><dd>Lease + usage-based service</dd></div>
+                </dl>
+                <div class="why-now"><span>Why now</span> Easier programming and connected service reduce adoption barriers.</div>
+              </article>
+            </div>
+
+            <p class="opportunity-note"><strong>Opportunity lens:</strong> strategic hypotheses for validation—not revenue forecasts. Prioritize customer discovery, willingness-to-pay testing, and regional partner checks.</p>
+          </section>
+
           <section class="bottom-grid">
             <article class="takeaway-card">
               <div class="section-label">Strategic takeaway</div>
@@ -209,8 +272,8 @@
 
         <section class="empty-state" id="empty-state" hidden>
           <span class="empty-icon">◎</span>
-          <h2>Profile not in this demo set</h2>
-          <p>This hackathon build includes the pre-analyzed Pemamek profile. Enter “Pemamek” to open the full market assessment.</p>
+          <h2>Profile not yet available</h2>
+          <p>This concept demo currently includes the Pemamek market profile. Enter “Pemamek” to open the full assessment.</p>
           <button type="button" id="load-demo">Load Pemamek demo</button>
         </section>
       </main>
