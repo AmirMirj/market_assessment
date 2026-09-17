@@ -3,7 +3,6 @@
   "trailingSlash": false,
   "functions": {
     "api/*.js": {
-      "runtime": "nodejs24.x",
       "includeFiles": "data/market-assessment.sqlite"
     }
   }
