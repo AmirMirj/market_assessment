@@ -4,7 +4,7 @@ const path = require('node:path');
 const {buildAssessment} = require('./lib/assessment');
 const {getHealth, getSignals} = require('./lib/intelligence/monitoring');
 
-const root = __dirname;
+const root = path.join(__dirname, 'public');
 const port = Number(process.env.PORT || 8000);
 const contentTypes = {
   '.html': 'text/html',
