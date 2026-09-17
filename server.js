@@ -21,7 +21,7 @@ function sendJson(response, status, payload) {
   response.end(JSON.stringify(payload));
 }
 
-const server = http.createServer((request, response) => {
+function handleRequest(request, response) {
   const url = new URL(request.url, `http://${request.headers.host}`);
   if (url.pathname === '/api/assess') {
     const assessment = buildAssessment(url.searchParams.get('company'));
@@ -50,8 +50,13 @@ const server = http.createServer((request, response) => {
         contentTypes[path.extname(filePath)] || 'application/octet-stream'
   });
   fs.createReadStream(filePath).pipe(response);
-});
+}
 
-server.listen(
-    port,
-    () => console.log(`Market Assessment running at http://localhost:${port}`));
+if (!process.env.VERCEL) {
+  const server = http.createServer(handleRequest);
+  server.listen(
+      port,
+      () => console.log(`Market Assessment running at http://localhost:${port}`));
+}
+
+module.exports = handleRequest;
