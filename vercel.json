@@ -4,7 +4,7 @@
   "functions": {
     "api/*.js": {
       "runtime": "nodejs24.x",
-      "includeFiles": ["data/market-assessment.sqlite"]
+      "includeFiles": "data/market-assessment.sqlite"
     }
   }
 }
