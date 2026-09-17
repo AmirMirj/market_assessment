@@ -17,6 +17,7 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
 
 body {
   margin: 0;
@@ -414,29 +415,47 @@ body.dark-theme .drawer-formula { color: #c3d5d0; background: #2d291b; }
 
 @media (max-width: 640px) {
   .topbar { height: 64px; }
-  .topbar-meta { display: none; }
+  .topbar-meta { display: flex; gap: 0; font-size: 0; }
+  .topbar-meta .status-dot { display: none; }
+  .theme-toggle { margin-left: 0; padding: 8px 10px; font-size: 15px; }
+  .theme-toggle span { display: none; }
   main { padding-inline: 14px; }
   .hero { padding-top: 45px; }
-  .hero-grid { gap: 35px; }
-  .search-box { min-height: 62px; padding-left: 14px; }
+  .hero-grid { gap: 30px; }
+  .hero-copy { margin-top: 20px; font-size: 15px; }
+  .search-box { min-height: 62px; padding-left: 14px; gap: 9px; }
   .search-box button span { display: none; }
   .search-box button { padding: 0 11px; }
   .scan-heading { align-items: start; }
   .scan-stamp { display: none; }
-  .profile-strip { padding: 24px 21px; }
+  .profile-strip { gap: 23px; padding: 24px 21px; }
   .entity-meta { line-height: 1.5; }
   .score-grid { grid-template-columns: 1fr; }
   .score-card { min-height: 138px; }
-  .chart-card { padding: 24px 15px 18px; }
-  .chart-wrap { height: 430px; overflow-x: auto; overflow-y: hidden; }
-  #comparison-chart { min-width: 760px; }
+  .chart-card { padding: 20px 13px 18px; }
+  .chart-header h3 { font-size: 21px; }
+  .chart-controls { width: 100%; align-items: stretch; flex-direction: column; gap: 10px; }
+  .segmented-control { width: 100%; }
+  .segmented-control button { flex: 1; min-height: 38px; }
+  .peer-select-label { margin-top: 3px; }
+  #peer-select { width: 100%; height: 42px; min-height: 42px; font-size: 12px; }
+  .legend { max-height: 86px; overflow-y: auto; }
+  .legend button { min-height: 36px; }
+  .chart-wrap { height: 350px; overflow: hidden; margin-top: 13px; }
+  #comparison-chart { width: 100%; height: 100%; min-width: 0; }
   .method-row, .source-footer { align-items: flex-start; flex-direction: column; }
   .opportunity-section { padding: 24px 15px; }
   .opportunity-header { align-items: flex-start; flex-direction: column; }
-  .scenario-controls { grid-template-columns: 1fr 1fr; width: 100%; }
+  .scenario-controls { grid-template-columns: 1fr; width: 100%; gap: 10px; }
+  .scenario-controls .section-label { margin-bottom: 2px; }
+  .scenario-controls label { grid-template-columns: 1fr 34px; align-items: center; }
+  .scenario-controls input { min-height: 24px; }
   .opportunity-header > p { text-align: left; }
   .source-links { justify-content: flex-start; }
   .takeaway-card, .signals-card { padding: 24px 21px; }
+  .source-footer { padding-inline: 2px; }
+  .export-button { width: 100%; min-height: 42px; }
+  .drawer-panel { width: 100%; padding: 34px 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

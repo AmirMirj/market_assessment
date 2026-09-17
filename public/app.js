@@ -108,8 +108,9 @@ function renderPeerSelect() {
 }
 
 function renderRadar() {
-  const width = Math.max(svg.clientWidth || 900, 760);
-  const height = svg.clientHeight || 390;
+  const isPhone = window.matchMedia('(max-width: 640px)').matches;
+  const width = isPhone ? Math.max(svg.clientWidth || 330, 320) : Math.max(svg.clientWidth || 900, 760);
+  const height = isPhone ? 350 : (svg.clientHeight || 390);
   const center = {x: width / 2, y: height / 2 + 5};
   const radius = Math.min(width * 0.29, height * 0.38);
   const angle = (index) =>
@@ -190,8 +191,9 @@ function renderChart() {
     renderRadar();
     return;
   }
-  const width = Math.max(svg.clientWidth || 900, 760);
-  const height = svg.clientHeight || 390;
+  const isPhone = window.matchMedia('(max-width: 640px)').matches;
+  const width = Math.max(svg.clientWidth || 900, isPhone ? 760 : 760);
+  const height = isPhone ? 400 : (svg.clientHeight || 390);
   const margin = {top: 18, right: 18, bottom: 68, left: 42};
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
