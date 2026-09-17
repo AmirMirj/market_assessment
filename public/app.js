@@ -109,7 +109,8 @@ function renderPeerSelect() {
 
 function renderRadar() {
   const isPhone = window.matchMedia('(max-width: 640px)').matches;
-  const width = isPhone ? Math.max(svg.clientWidth || 330, 320) : Math.max(svg.clientWidth || 900, 760);
+  const width = isPhone ? Math.max(svg.clientWidth || 330, 320) :
+                          Math.max(svg.clientWidth || 900, 760);
   const height = isPhone ? 350 : (svg.clientHeight || 390);
   const center = {x: width / 2, y: height / 2 + 5};
   const radius = Math.min(width * 0.29, height * 0.38);
@@ -669,3 +670,4 @@ dialog.addEventListener('click', (event) => {
 window.addEventListener('resize', renderChart);
 renderLegend();
 renderChart();
+loadProfile();
