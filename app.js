@@ -52,7 +52,8 @@ let series = [
   },
 ];
 
-const hiddenSeries = new Set(series.filter((item) => !item.primary).map((item) => item.name));
+const hiddenSeries =
+    new Set(series.filter((item) => !item.primary).map((item) => item.name));
 let chartMode = 'radar';
 const scenarioWeights = {
   defense: 70,
@@ -82,7 +83,8 @@ function renderLegend() {
     const button = document.createElement('button');
     button.type = 'button';
     button.setAttribute('aria-pressed', String(!hiddenSeries.has(item.name)));
-    button.innerHTML = `<i style="background:${item.primary ? '#0D6EFD' : '#CBD5E1'}"></i>${item.name}`;
+    button.innerHTML = `<i style="background:${
+        item.primary ? '#0D6EFD' : '#CBD5E1'}"></i>${item.name}`;
     button.classList.toggle('off', hiddenSeries.has(item.name));
     button.addEventListener('click', () => {
       hiddenSeries.has(item.name) ? hiddenSeries.delete(item.name) :
@@ -168,10 +170,15 @@ function renderRadar() {
     item.values.forEach((value, index) => {
       const node = point(index, value);
       const hit = svgNode('circle', {
-        cx: node.x, cy: node.y, r: item.primary ? 7 : 5,
-        fill: seriesColor, class: 'radar-point'
+        cx: node.x,
+        cy: node.y,
+        r: item.primary ? 7 : 5,
+        fill: seriesColor,
+        class: 'radar-point'
       });
-      hit.addEventListener('mouseenter', () => showTooltip(item, value, index, node.x, node.y, width));
+      hit.addEventListener(
+          'mouseenter',
+          () => showTooltip(item, value, index, node.x, node.y, width));
       hit.addEventListener('mouseleave', hideTooltip);
       svg.append(hit);
     });
@@ -223,7 +230,8 @@ function renderChart() {
     });
     label.append(svgNode('tspan', {x: x(index), dy: 0}, parts[0]));
     label.append(svgNode('tspan', {x: x(index), dy: 13}, parts[1]));
-    label.append(svgNode('tspan', {x: x(index), dy: 13}, dimensionGroups[index]));
+    label.append(
+        svgNode('tspan', {x: x(index), dy: 13}, dimensionGroups[index]));
     svg.append(label);
   });
 
@@ -264,12 +272,16 @@ function renderChart() {
 }
 
 function showTooltip(item, value, index, pointX, pointY, chartWidth) {
-  const source = currentAssessment?.traceability?.evidence?.find((entry) =>
-      entry.label.toLowerCase().includes(item.name.toLowerCase().split(' ')[0])) ||
+  const source = currentAssessment?.traceability?.evidence?.find(
+                     (entry) => entry.label.toLowerCase().includes(
+                         item.name.toLowerCase().split(' ')[0])) ||
       currentAssessment?.traceability?.evidence?.[0];
-  const evidence = source ? `${source.label} evidence verified via public material` : 'Public evidence set';
+  const evidence = source ?
+      `${source.label} evidence verified via public material` :
+      'Public evidence set';
   tooltip.innerHTML = `<strong>${item.name} · ${
-      value.toFixed(1)}</strong><span>${dimensions[index].join(' ')} · ${dimensionGroups[index]}</span><small>${evidence}</small>`;
+      value.toFixed(1)}</strong><span>${dimensions[index].join(' ')} · ${
+      dimensionGroups[index]}</span><small>${evidence}</small>`;
   tooltip.style.display = 'block';
   const left = pointX > chartWidth - 175 ? pointX - 160 : pointX + 12;
   tooltip.style.left = `${left}px`;
@@ -319,7 +331,9 @@ function applyAssessment(assessment) {
           'Evidence traceable'}`;
   series = assessment.benchmark.series;
   hiddenSeries.clear();
-  series.forEach((item) => { if (!item.primary) hiddenSeries.add(item.name); });
+  series.forEach((item) => {
+    if (!item.primary) hiddenSeries.add(item.name);
+  });
   renderPeerSelect();
   document.querySelector('.opportunity-grid').innerHTML =
       assessment.opportunities

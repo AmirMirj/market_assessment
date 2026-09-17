@@ -56,7 +56,8 @@ if (!process.env.VERCEL) {
   const server = http.createServer(handleRequest);
   server.listen(
       port,
-      () => console.log(`Market Assessment running at http://localhost:${port}`));
+      () =>
+          console.log(`Market Assessment running at http://localhost:${port}`));
 }
 
 module.exports = handleRequest;
