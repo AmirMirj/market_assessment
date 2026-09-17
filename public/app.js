@@ -295,6 +295,238 @@ function hideTooltip() {
   tooltip.style.display = 'none';
 }
 
+const synapseConnections = [
+  {
+    id: 'naval',
+    label: 'Naval & icebreaker yards',
+    kind: 'Customer segment',
+    weight: 92,
+    x: 108,
+    y: 92,
+    color: '#0D6EFD'
+  },
+  {
+    id: 'pemamek',
+    label: 'Pemamek',
+    kind: 'Focus company',
+    weight: 100,
+    x: 300,
+    y: 156,
+    color: '#0D6EFD'
+  },
+  {
+    id: 'wind',
+    label: 'Floating wind fabricators',
+    kind: 'Growth segment',
+    weight: 78,
+    x: 118,
+    y: 244,
+    color: '#F59E0B'
+  },
+  {
+    id: 'software',
+    label: 'Production software',
+    kind: 'Capability layer',
+    weight: 68,
+    x: 300,
+    y: 280,
+    color: '#10B981'
+  },
+  {
+    id: 'peers',
+    label: 'Automation peers',
+    kind: 'Competitive set',
+    weight: 84,
+    x: 500,
+    y: 104,
+    color: '#94A3B8'
+  },
+  {
+    id: 'suppliers',
+    label: 'Robot & welding suppliers',
+    kind: 'Supply network',
+    weight: 61,
+    x: 500,
+    y: 250,
+    color: '#94A3B8'
+  },
+];
+
+function renderSynapseNetwork() {
+  const network = document.querySelector('#synapse-network');
+  if (!network) return;
+  const links = [
+    ['naval', 'pemamek', 92],
+    ['wind', 'pemamek', 78],
+    ['pemamek', 'software', 68],
+    ['peers', 'pemamek', 84],
+    ['suppliers', 'pemamek', 61],
+    ['peers', 'software', 44],
+    ['suppliers', 'software', 52],
+  ];
+  const byId =
+      Object.fromEntries(synapseConnections.map((node) => [node.id, node]));
+  network.innerHTML = '';
+  network.setAttribute('viewBox', '0 0 610 340');
+  links.forEach(([from, to, weight]) => {
+    const a = byId[from];
+    const b = byId[to];
+    network.append(svgNode('line', {
+      x1: a.x,
+      y1: a.y,
+      x2: b.x,
+      y2: b.y,
+      class: 'synapse-link',
+      'stroke-width': Math.max(1.5, weight / 22)
+    }));
+  });
+  synapseConnections.forEach((node) => {
+    const group = svgNode('g', {
+      class: 'synapse-node',
+      tabindex: '0',
+      role: 'button',
+      'aria-label': `${node.label}, weight ${node.weight}`
+    });
+    group.append(svgNode('circle', {
+      cx: node.x,
+      cy: node.y,
+      r: node.id === 'pemamek' ? 18 : 13,
+      fill: node.color,
+      class: 'synapse-node-circle'
+    }));
+    group.append(svgNode('circle', {
+      cx: node.x,
+      cy: node.y,
+      r: node.id === 'pemamek' ? 25 : 19,
+      class: 'synapse-node-ring'
+    }));
+    const label = svgNode(
+        'text', {
+          x: node.x,
+          y: node.y + 34,
+          'text-anchor': 'middle',
+          class: 'synapse-node-label'
+        },
+        node.label);
+    group.append(label);
+    group.addEventListener('click', () => showSynapseDetail(node));
+    group.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') showSynapseDetail(node);
+    });
+    network.append(group);
+  });
+}
+
+function showSynapseDetail(node) {
+  const detail = document.querySelector('#network-detail');
+  detail.innerHTML = `<strong>${node.label}</strong><span>${
+      node.kind} · synaptic weight ${node.weight}/100</span><p>${
+      node.id === 'pemamek' ?
+          'Central connector: links yard demand, software integration, peers, and the supplier network.' :
+          `This pathway is a ${
+              node.weight >= 80 ?
+                  'high' :
+                  'moderate'}-strength relationship in the current market model.`}</p>`;
+  document.querySelectorAll('.synapse-node')
+      .forEach((item) => item.classList.remove('selected'));
+  document.querySelectorAll('.synapse-node').forEach((item) => {
+    if (item.getAttribute('aria-label')?.startsWith(node.label + ','))
+      item.classList.add('selected');
+  });
+}
+
+function renderPathways() {
+  const pathways = [
+    [
+      'Competitor price drops', 'Reprice entry automation tier',
+      'Commercial response', '#F59E0B'
+    ],
+    [
+      'Defense spending rises', 'Prioritize autonomous naval line',
+      'Portfolio response', '#0D6EFD'
+    ],
+    [
+      'Welder scarcity intensifies', 'Shift budget to remote optimization',
+      'Operations response', '#10B981'
+    ],
+    [
+      'Offshore wind orders accelerate', 'Activate floating-wind blueprint',
+      'Growth response', '#8B5CF6'
+    ],
+  ];
+  document.querySelector('#pathway-list').innerHTML =
+      pathways
+          .map(
+              ([signal, action, type, color]) =>
+                  `<button class="pathway-row" type="button" data-pathway="${
+                      action}"><span class="pathway-signal">${
+                      signal}</span><span class="pathway-arrow" style="color:${
+                      color}">→</span><span class="pathway-action">${
+                      action}<small>${type}</small></span></button>`)
+          .join('');
+  document.querySelectorAll('[data-pathway]')
+      .forEach((item) => item.addEventListener('click', () => {
+        document.querySelector('#network-detail').innerHTML =
+            `<strong>Signal-to-action mapped</strong><span>${
+                item.querySelector('.pathway-signal').textContent}</span><p>${
+                item.dataset.pathway}</p>`;
+      }));
+}
+
+function renderCapabilityMatrix() {
+  const matrix = document.querySelector('#capability-matrix');
+  if (!matrix || !currentAssessment) return;
+  const rows = currentAssessment.benchmark.series.slice(0, 8);
+  const headers = dimensions.map((parts) => parts.join(' '));
+  matrix.innerHTML = `<thead><tr><th>Market player</th>${
+      headers.map((header) => `<th>${header}</th>`)
+          .join('')}</tr></thead><tbody>${
+      rows.map(
+              (item) => `<tr><th><span class="matrix-dot" style="background:${
+                  item.primary ? '#0D6EFD' :
+                                 '#CBD5E1'}"></span>${item.name}</th>${
+                  item.values
+                      .map(
+                          (value, index) => `<td tabindex="0" title="${
+                              item.name} · ${headers[index]} · ${
+                              value.toFixed(
+                                  1)} · public evidence"><span class="matrix-cell" style="--score:${
+                              value / 5}">${value.toFixed(1)}</span></td>`)
+                      .join('')}</tr>`)
+          .join('')}</tbody>`;
+}
+
+function renderSegment(segment = 'naval') {
+  const content = document.querySelector('#segment-content');
+  const data = segment === 'naval' ?
+      {
+        title: 'Naval yards',
+        shared: 'Compliance, traceability, delivery certainty',
+        unique: 'Defense budgets, sovereign capacity, icebreaker programs',
+        fit: 'High strategic fit'
+      } :
+      {
+        title: 'Floating wind',
+        shared:
+            'Heavy structures, repeatable production, skilled-labor pressure',
+        unique:
+            'Serial foundation demand, offshore project cycles, port logistics',
+        fit: 'Emerging strategic fit'
+      };
+  content.innerHTML = `<h4>${
+      data.title}</h4><dl><div><dt>Shared circuit</dt><dd>${
+      data.shared}</dd></div><div><dt>Unique dynamics</dt><dd>${
+      data.unique}</dd></div><div><dt>Pemamek fit</dt><dd class="fit-value">${
+      data.fit}</dd></div></dl>`;
+}
+
+function renderSynapse() {
+  renderSynapseNetwork();
+  renderPathways();
+  renderCapabilityMatrix();
+  renderSegment();
+}
+
 function applyAssessment(assessment) {
   currentAssessment = assessment;
   input.value = assessment.entity;
@@ -338,6 +570,7 @@ function applyAssessment(assessment) {
     if (!item.primary) hiddenSeries.add(item.name);
   });
   renderPeerSelect();
+  renderSynapse();
   document.querySelector('.opportunity-grid').innerHTML =
       assessment.opportunities
           .map(
@@ -555,6 +788,13 @@ document.querySelector('#defense-weight')
 document.querySelector('#wind-weight')
     .addEventListener(
         'input', (event) => updateScenarioWeight('wind', event.target.value));
+
+document.querySelectorAll('[data-segment]')
+    .forEach((button) => button.addEventListener('click', () => {
+      document.querySelectorAll('[data-segment]')
+          .forEach((item) => item.classList.toggle('active', item === button));
+      renderSegment(button.dataset.segment);
+    }));
 
 function openMetricDrawer(metric) {
   const assessment = currentAssessment || {

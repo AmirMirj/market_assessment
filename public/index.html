@@ -197,6 +197,44 @@
             </div>
           </section>
 
+          <section class="synapse-section" aria-labelledby="synapse-title">
+            <div class="synapse-header">
+              <div>
+                <span class="section-label">Market synapse</span>
+                <h3 id="synapse-title">Trace the ecosystem from signal to action.</h3>
+                <p>Weighted relationships show where demand, suppliers, and competitors create leverage or exposure.</p>
+              </div>
+              <span class="synapse-status"><span></span> Live relationship model</span>
+            </div>
+
+            <div class="synapse-grid">
+              <div class="network-panel">
+                <div class="panel-heading"><span class="section-label">Weighted ecosystem</span><span class="network-hint">Select a node to trace flow</span></div>
+                <svg id="synapse-network" class="synapse-network" role="img" aria-label="Weighted market ecosystem graph"></svg>
+                <div class="network-detail" id="network-detail">Select Pemamek to inspect its strongest ecosystem connections.</div>
+              </div>
+              <div class="pathway-panel">
+                <div class="panel-heading"><span class="section-label">Signal → execution</span><span class="network-hint">Direct pathways</span></div>
+                <div class="pathway-list" id="pathway-list"></div>
+              </div>
+            </div>
+
+            <div class="synapse-lower-grid">
+              <div class="matrix-panel">
+                <div class="panel-heading"><span class="section-label">Capability matrix</span><span class="network-hint">Hover a cell for evidence</span></div>
+                <div class="matrix-scroll"><table class="capability-matrix" id="capability-matrix"></table></div>
+              </div>
+              <div class="segment-panel">
+                <div class="panel-heading"><span class="section-label">Segment divergence</span><span class="network-hint">Shared vs. unique dynamics</span></div>
+                <div class="segment-switch" role="group" aria-label="Compare market segments">
+                  <button type="button" class="active" data-segment="naval">Naval yards</button>
+                  <button type="button" data-segment="wind">Floating wind</button>
+                </div>
+                <div id="segment-content" class="segment-content"></div>
+              </div>
+            </div>
+          </section>
+
           <section class="opportunity-section" aria-labelledby="opportunity-title">
             <div class="opportunity-header">
               <div>
