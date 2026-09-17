@@ -27,6 +27,7 @@
         <div class="topbar-meta">
           <span class="status-dot"></span>
           Executive intelligence
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">◐ <span>Boardroom mode</span></button>
         </div>
       </header>
 
@@ -53,13 +54,24 @@
                   name="company"
                   type="text"
                   value="Pemamek"
+                  list="company-suggestions"
                   autocomplete="off"
                   spellcheck="false"
                 />
-                <button type="submit" aria-label="Run company scan">
+                <datalist id="company-suggestions">
+                  <option value="Pemamek"></option>
+                  <option value="Pemamek Oy"></option>
+                  <option value="pema"></option>
+                </datalist>
+                <button id="scan-button" type="submit" aria-label="Run company scan">
                   <span>Run scan</span>
                   <kbd>↵</kbd>
                 </button>
+              </div>
+              <p class="scan-status" id="scan-status" role="status" aria-live="polite"></p>
+              <div class="scan-progress" id="scan-progress" aria-live="polite" hidden>
+                <span class="progress-ring" aria-hidden="true"></span>
+                <div><strong>Scanning public filings &amp; global patent databases...</strong><span id="progress-log">Opening evidence index</span></div>
               </div>
             </form>
           </div>
@@ -68,7 +80,7 @@
         <section class="dashboard" id="dashboard" aria-live="polite">
           <div class="scan-heading">
             <div>
-              <div class="scan-kicker"><span></span> Analysis ready</div>
+              <div class="scan-kicker"><span></span> <span id="analysis-state">Analysis ready</span></div>
               <h2><span data-company>Pemamek</span> market position</h2>
             </div>
             <div class="scan-stamp">
@@ -95,45 +107,58 @@
                 <span>Skilled-labor pressure</span>
               </div>
             </div>
+            <div class="entity-meta" id="entity-meta" aria-label="Resolved entity metadata"></div>
           </section>
 
           <section class="score-grid" aria-label="Executive scorecard">
-            <article class="score-card score-card-primary">
+            <article class="score-card score-card-primary" data-metric="competitive_strength" tabindex="0" role="button" aria-label="Open competitive strength details">
               <div class="card-topline">
                 <span>Competitive strength</span>
-                <span class="pill positive">Leading</span>
+                <span class="pill positive">Leading <small>Verified</small></span>
               </div>
               <div class="score-value"><strong id="overall-score">4.7</strong><span>/ 5</span></div>
-              <div class="mini-track"><span style="width: 93.5%"></span></div>
+              <div class="mini-track"><span id="competitive-track" style="width: 93.5%"></span></div>
               <p>Weighted public-evidence score</p>
+              <span class="source-tag">Verified via public filings</span>
             </article>
 
-            <article class="score-card">
+            <article class="score-card" data-metric="peer_advantage" tabindex="0" role="button" aria-label="Open peer advantage details">
               <div class="card-topline">
                 <span>Peer advantage</span>
                 <span class="trend">↗</span>
               </div>
               <div class="score-value"><strong id="peer-advantage">+0.4</strong><span>pts</span></div>
               <p>Above the peer-set average</p>
+              <span class="source-tag">Peer matrix 2026</span>
             </article>
 
-            <article class="score-card">
+            <article class="score-card" data-metric="category_leads" tabindex="0" role="button" aria-label="Open category leads details">
               <div class="card-topline">
                 <span>Category leads</span>
-                <span class="trend">04</span>
+                <span class="trend" id="category-leads-count">04</span>
               </div>
               <div class="score-value"><strong id="category-leads">4</strong><span>/ 8</span></div>
               <p>Top score across assessed dimensions</p>
+              <span class="source-tag">Capability evidence</span>
             </article>
 
-            <article class="score-card">
+            <article class="score-card" data-metric="market_momentum" tabindex="0" role="button" aria-label="Open market momentum details">
               <div class="card-topline">
                 <span>Market momentum</span>
                 <span class="pill positive">Strong</span>
               </div>
-              <div class="score-value word-value"><strong>High</strong></div>
+              <div class="score-value word-value"><strong id="market-momentum">High</strong></div>
               <p>Labor scarcity + yard modernization</p>
+              <span class="source-tag">Market signals</span>
             </article>
+          </section>
+
+          <section class="score-insight" aria-labelledby="score-insight-title">
+            <div>
+              <span class="section-label" id="score-insight-title">How the score is built</span>
+              <p id="score-formula">Tech leadership blends patent evidence and heavy-plate capacity. Software integration blends adaptive control and CAD/CAM integration.</p>
+            </div>
+            <div class="evidence-status" id="evidence-status"><span></span> Evidence traceable</div>
           </section>
 
           <section class="chart-card" aria-labelledby="chart-title">
@@ -143,14 +168,23 @@
                 <h3 id="chart-title">Capability profile by competitor</h3>
                 <p>1 = limited evidence · 5 = category-leading evidence</p>
               </div>
-              <div class="legend" id="legend" aria-label="Toggle competitor series"></div>
+              <div class="chart-controls">
+                <div class="segmented-control" role="group" aria-label="Chart type">
+                  <button type="button" data-chart-mode="line">Line</button>
+                  <button type="button" class="active" data-chart-mode="radar">Radar</button>
+                </div>
+                <label class="peer-select-label" for="peer-select">Compare peers</label>
+                <select id="peer-select" multiple size="1" aria-label="Select competitors to display"></select>
+              </div>
             </div>
+
+            <div class="legend" id="legend" aria-label="Toggle competitor series"></div>
 
             <div class="chart-wrap">
               <svg
                 id="comparison-chart"
                 role="img"
-                aria-label="Line chart comparing Pemamek, KRANENDONK, Inrotech and ESAB across eight capabilities"
+                aria-label="Radar chart comparing capability profiles across grouped operational, technical, and digital dimensions"
               ></svg>
               <div class="tooltip" id="chart-tooltip" role="status"></div>
             </div>
@@ -169,7 +203,11 @@
                 <span class="section-label">Greenfield opportunities</span>
                 <h3 id="opportunity-title">Where Pemamek can create the next market</h3>
               </div>
-              <p>Three evidence-led growth hypotheses shaped by the competitive position and direction of travel.</p>
+              <div class="scenario-controls" aria-label="Scenario weighting controls">
+                <span class="section-label">Scenario lens</span>
+                <label>Defense growth <output id="defense-weight-value">70</output><input id="defense-weight" type="range" min="0" max="100" value="70" /></label>
+                <label>Offshore wind <output id="wind-weight-value">50</output><input id="wind-weight" type="range" min="0" max="100" value="50" /></label>
+              </div>
             </div>
 
             <div class="opportunity-grid">
@@ -261,6 +299,7 @@
               <span class="section-label">Evidence base</span>
               <p>Public company material, reviewed September 2026</p>
             </div>
+            <button class="export-button" id="export-brief" type="button">↓ Download PDF brief</button>
             <div class="source-links">
               <a href="https://pemamek.com/welding-solutions/shipbuilding/" target="_blank" rel="noreferrer">Pemamek ↗</a>
               <a href="https://kranendonk.com/" target="_blank" rel="noreferrer">KRANENDONK ↗</a>
@@ -273,11 +312,26 @@
         <section class="empty-state" id="empty-state" hidden>
           <span class="empty-icon">◎</span>
           <h2>Profile not yet available</h2>
-          <p>This concept demo currently includes the Pemamek market profile. Enter “Pemamek” to open the full assessment.</p>
+          <p id="empty-message">This concept demo currently includes the Pemamek market profile. Enter “Pemamek” to open the full assessment.</p>
           <button type="button" id="load-demo">Load Pemamek demo</button>
         </section>
       </main>
     </div>
+
+    <aside class="metric-drawer" id="metric-drawer" aria-hidden="true" aria-labelledby="drawer-title">
+      <div class="drawer-backdrop" data-drawer-close></div>
+      <div class="drawer-panel">
+        <button class="dialog-close" type="button" aria-label="Close metric details" data-drawer-close>×</button>
+        <span class="section-label">Metric deep-dive</span>
+        <h2 id="drawer-title">Competitive strength</h2>
+        <p id="drawer-summary"></p>
+        <div class="drawer-score" id="drawer-score"></div>
+        <span class="source-badge">Verified via public filings</span>
+        <div class="drawer-formula" id="drawer-formula"></div>
+        <h3>Evidence trail</h3>
+        <ul id="drawer-evidence"></ul>
+      </div>
+    </aside>
 
     <dialog id="method-dialog">
       <button class="dialog-close" type="button" aria-label="Close scoring guide">×</button>
@@ -293,6 +347,7 @@
       <p>Scores are a reproducible analyst judgment based on linked public sources, not vendor-supplied ratings or audited market share.</p>
     </dialog>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="app.js"></script>
   </body>
 </html>

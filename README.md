@@ -4,7 +4,18 @@ A polished, static hackathon demo for an executive market-assessment product. Th
 
 ## Run locally
 
-Open `index.html` directly in a browser, or serve the folder with any static web server.
+Use Node 22.5+ to run the frontend and API together. The app uses Node's built-in SQLite module, so no native database package installation is required:
+
+```bash
+cd market-assessment-0-0
+npm start
+```
+
+Then open `http://localhost:8000`. The assessment endpoint is available at
+`GET /api/assess?company=Pemamek` and accepts the aliases `pema`, `pemamek`,
+and `pemamek oy`.
+
+For a static-only presentation, `index.html` can still be opened directly in a browser.
 
 ## Demo flow
 
@@ -15,3 +26,12 @@ Open `index.html` directly in a browser, or serve the folder with any static web
 ## Assessment note
 
 The 1–5 scores are directional analyst judgments based on public company materials linked in the dashboard. They are not audited market-share data or vendor-supplied ratings.
+
+## Backend shape
+
+- `lib/assessment.js` contains entity normalization, scoring, peer benchmarking, opportunity rules, and traceability metadata.
+- `lib/database.js` owns the SQLite database at `data/market-assessment.sqlite`, including companies, scores, dimensions, sources, signals, and opportunities.
+- `api/assess.js` is the Vercel-compatible serverless route.
+- `api/health.js` and `api/signals.js` expose pipeline readiness and alert-ready market signals.
+- `server.js` serves the static frontend and the same API locally without external dependencies.
+- The API returns deterministic structured data with `fallback: true` when the presentation profile is served from the local evidence set.
